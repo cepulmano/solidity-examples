@@ -35,6 +35,11 @@ contract PropertySystem {
         _;       
     }
 
+    modifier enoughBalance(uint amount){
+        require ((amount * 1 ether) <= address(this).balance, "Not enough balance!");
+        _;
+    }
+
     constructor() {
         administrator = msg.sender;
     }
@@ -50,6 +55,15 @@ contract PropertySystem {
 
     function viewProperty(uint propertyId) external view returns(Property memory) {
         return properties[propertyId];
+    }
+
+    function getBalance() external view onlyAdmin returns(uint) {
+        return address(this).balance;
+    }
+
+    function withdraw(uint amount) external onlyAdmin enoughBalance(amount) {
+        address payable recipient = payable(msg.sender);
+        recipient.transfer(amount * 1 ether);
     }
 
 }
