@@ -26,7 +26,6 @@ contract Blockchain {
         _;
     }
 
-    // --- Events ---
     event StudentEnrolled(address indexed studentAddress, uint idnumber);
     event GradeAssigned(address indexed studentAddress, uint grade);
 
