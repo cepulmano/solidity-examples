@@ -2,7 +2,6 @@
 pragma solidity >=0.8.2 <0.9.0;
 
 contract Blockchain {
-    // Contract code goes here
     address internal teacher;
 
     enum Specializations { DataScience, EnterpriseSystems, InteractiveMultimedia }
@@ -27,6 +26,10 @@ contract Blockchain {
         _;
     }
 
+    // --- Events ---
+    event StudentEnrolled(address indexed studentAddress, uint idnumber);
+    event GradeAssigned(address indexed studentAddress, uint grade);
+
     constructor() {
         teacher = msg.sender;
     }
@@ -39,17 +42,17 @@ contract Blockchain {
         students[msg.sender].name = _name;
     }
 
-    function enroll (uint _id) public isStudent {
+    function enroll(uint _id) public isStudent {
         students[msg.sender].idnumber = _id;
+        emit StudentEnrolled(msg.sender, _id);
     }
 
-    function addGrade (address _student, uint _grade) public isTeacher {
+    function addGrade(address _student, uint _grade) public isTeacher {
         students[_student].grade = _grade;
+        emit GradeAssigned(_student, _grade);
     }
 
-    function viewTeacher() external view returns(address) {
+    function viewTeacher() external view returns (address) {
         return teacher;
     }
-
-
-} // Blockchain
+}
